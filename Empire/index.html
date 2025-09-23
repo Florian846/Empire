@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/ico" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/style.css">
+    <title>Empire</title>
+</head>
+
+<body>
+<div id="app">
+    <div class="scrolling-background"></div>
+    <div id="menu-container">
+        <div class="game-title">
+            <img src="/src/textures/titel.png" alt="Empire Game Logo">
+        </div>
+
+        <div class="menu-buttons">
+            <button id="singleplayer-button" class="menu-button">Singleplayer</button>
+            <button id="multiplayer-button" class="menu-button disabled">Multiplayer</button>
+            <button id="tutorial-button" class="menu-button disabled">Tutorial</button>
+            <button id="settings-button" class="menu-button disabled">Einstellungen</button>
+            <button id="instructions-button" class="menu-button disabled">Anleitung</button>
+        </div>
+
+        <a href="https://discord.gg/g3Bh9w5qfu" target="_blank" class="discord-link">
+            <img src="/src/textures/discord-icon.png" alt="Join Discord">
+        </a>-
+    </div>
+
+    <div id="match-settings-container" style="display: none;">
+        <div class="settings-panel">
+            <h2>Spiel Einstellungen</h2>
+
+            <div class="setting-group">
+                <label>Kartengröße</label>
+                <select id="map-size">
+                    <option value="small">Klein</option>
+                    <option value="medium" selected>Mittel</option>
+                    <option value="large">Groß</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label>Anzahl der Bots</label>
+                <select id="bot-count">
+                    <option value="1">1 Bot</option>
+                    <option value="2">2 Bots</option>
+                    <option value="3">3 Bots</option>
+                    <option value="4">4 Bots</option>
+                </select>
+            </div>
+
+            <div class="setting-buttons">
+                <div class="setting-buttons">
+                    <button id="load-game-button" class="menu-button full-width">Spiel laden</button>
+                    <div class="button-row">
+                        <button id="back-to-menu-button" class="menu-button">Zurück zum Menü</button>
+                        <button id="start-game-button" class="menu-button">Spiel starten</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="pixi-container"></div>
+</div>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
