@@ -34,6 +34,11 @@
             <h2>Spiel Einstellungen</h2>
 
             <div class="setting-group">
+                <label for="player-name">Spielername</label>
+                <input type="text" id="player-name">
+            </div>
+
+            <div class="setting-group">
                 <label>Kartengröße</label>
                 <select id="map-size">
                     <option value="small">Klein</option>
@@ -65,6 +70,52 @@
         </div>
     </div>
     <div id="pixi-container"></div>
+
+    <!-- Game GUI Container (initially hidden) -->
+    <div id="game-gui-container" class="gui-element hidden">
+        <!-- Action Buttons -->
+        <div id="action-buttons-container">
+            <button id="create-city-button" class="action-button">
+                <i class="icon-city"></i> <!-- Placeholder for city icon -->
+                Stadt
+            </button>
+            <button id="create-fields-button" class="action-button">
+                <i class="icon-fields"></i> <!-- Placeholder for fields icon -->
+                Felder
+            </button>
+        </div>
+
+        <!-- Minimap -->
+        <div id="minimap-container">
+            <h4>Minimap</h4>
+            <div id="minimap-canvas">
+                <!-- Minimap rendering will go here -->
+            </div>
+        </div>
+
+        <!-- Chat -->
+        <div id="chat-container" class="hidden">
+            <div id="chat-messages">
+                <!-- Chat messages will be added here by JS -->
+                <div class="chat-message"><span>Player1:</span> Hello!</div>
+                <div class="chat-message"><span>Bot1:</span> Greetings!</div>
+            </div>
+            <input type="text" id="chat-input" placeholder="Type your message...">
+        </div>
+
+        <!-- Scoreboard -->
+        <div id="scoreboard-container" class="hidden">
+            <div class="scoreboard-header">
+                <h2>Scoreboard</h2>
+            </div>
+            <ul id="player-list">
+                <!-- Player entries will be added here by JS -->
+                <li>Spieler 1: 1000</li>
+                <li>Bot 1: 800</li>
+                <li>Bot 2: 750</li>
+            </ul>
+        </div>
+    </div>
 </div>
 <script type="module" src="/src/main.ts"></script>
 </body>

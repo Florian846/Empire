@@ -5,9 +5,9 @@ export class CameraControls {
   private container: Container;
   private cameraX: number = 0;
   private cameraY: number = 0;
-  private moveSpeed: number = 10;
+  private moveSpeed: number = 35;
   private zoomSpeed: number = 0.1;
-  private edgeThreshold: number = 50;
+  private edgeThreshold: number = 5;
   private keys: Set<string> = new Set();
   private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
   private minZoom: number;
@@ -75,10 +75,23 @@ export class CameraControls {
       const zoomFactor = 1 + this.zoomSpeed * zoomDirection;
       const newScale = this.targetZoom * zoomFactor;
 
+      const oldScale = this.targetZoom;
       this.targetZoom = Math.max(
         this.minZoom,
         Math.min(this.maxZoom, newScale),
       );
+
+      // Get the world coordinates of the mouse before zoom
+      const mouseWorldX = (this.mousePosition.x - this.container.x) / oldScale;
+      const mouseWorldY = (this.mousePosition.y - this.container.y) / oldScale;
+
+      // The new container position is the mouse position minus the scaled world offset
+      const newContainerX = this.mousePosition.x - mouseWorldX * this.targetZoom;
+      const newContainerY = this.mousePosition.y - mouseWorldY * this.targetZoom;
+
+      // Update cameraX and cameraY based on the new container position
+      this.cameraX = newContainerX / this.targetZoom;
+      this.cameraY = newContainerY / this.targetZoom;
 
       // Reset wheelDelta
       this.wheelDelta = 0;
@@ -114,23 +127,9 @@ export class CameraControls {
   }
 
   private applyTransform() {
-    // Zoom unter dem Mauszeiger anwenden
-    if (this.container.scale.x !== this.targetZoom) {
-      // Berechne die Welt-Koordinate unter dem Mauszeiger vor dem Zoom
-      const mouseWorldX =
-        (this.mousePosition.x - this.container.x) / this.container.scale.x;
-      const mouseWorldY =
-        (this.mousePosition.y - this.container.y) / this.container.scale.y;
-
-      // Neuen Zoom anwenden
-      this.container.scale.set(this.targetZoom);
-      // Kameraposition anpassen, um unter dem Mauszeiger zu zoomen
-      this.container.x = this.mousePosition.x;
-      this.container.y = this.mousePosition.y;
-    }
-
-    this.container.x = this.cameraX * this.container.scale.x;
-    this.container.y = this.cameraY * this.container.scale.y;
+    this.container.scale.set(this.targetZoom);
+    this.container.x = this.cameraX * this.targetZoom;
+    this.container.y = this.cameraY * this.targetZoom;
 
     if (this.mapWidth > 0 && this.mapHeight > 0) {
       // Hier könnten später Begrenzungen implementiert werden

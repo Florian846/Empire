@@ -1,12 +1,9 @@
 import { MapGenerator } from "./mapGenerator";
 import { GameSettings } from "./types";
 
-export async function generateMap(settings: GameSettings): Promise<{
-  heightMap: number[][];
-  terrainMap: Uint8ClampedArray; // Changed from Uint8Array
-  width: number;
-  height: number;
-}> {
+export async function generateMap(
+  settings: GameSettings,
+): Promise<MapGenerator> {
   // Convert string settings to actual numbers
   const sizeMap = {
     small: 256,
@@ -22,13 +19,7 @@ export async function generateMap(settings: GameSettings): Promise<{
   try {
     const generator = new MapGenerator(mapSize, mapSize);
     await generator.generateMaps();
-
-    return {
-      heightMap: generator.getHeightMap(),
-      terrainMap: generator.getTerrainData(),
-      width: mapSize,
-      height: mapSize,
-    };
+    return generator;
   } catch (error: unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
