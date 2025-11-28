@@ -72,17 +72,51 @@
     <div id="pixi-container"></div>
 
     <!-- Game GUI Container (initially hidden) -->
-    <div id="game-gui-container" class="gui-element hidden">
-        <!-- Action Buttons -->
-        <div id="action-buttons-container">
-            <button id="create-city-button" class="action-button">
-                <i class="icon-city"></i> <!-- Placeholder for city icon -->
-                Stadt
-            </button>
-            <button id="create-fields-button" class="action-button">
-                <i class="icon-fields"></i> <!-- Placeholder for fields icon -->
-                Felder
-            </button>
+    <div id="game-gui-container" hidden>
+        <!-- Resources -->
+        <div id="resources-container">
+            <div class="resource-item">
+                <img src="/src/textures/Icon.png" alt="Population Icon">
+                <span id="population-value">0</span>
+            </div>
+            <div class="resource-item">
+                <img src="/src/textures/Icon.png" alt="Soldiers Icon">
+                <span id="soldiers-value">0</span>
+            </div>
+            <div class="resource-item">
+                <img src="/src/textures/Icon.png" alt="Land Controlled Icon">
+                <span id="land-value">0%</span>
+            </div>
+            <div class="resource-item">
+                <img src="/src/textures/Stone.png" alt="Metal Icon">
+                <span id="metal-value">0</span>
+            </div>
+            <div class="resource-item">
+                <img src="/src/textures/Tree1.png" alt="Wood Icon">
+                <span id="wood-value">0</span>
+            </div>
+            <div class="resource-item">
+                <img src="/src/textures/Icon.png" alt="Food Icon">
+                <span id="food-value">0</span>
+            </div>
+        </div>
+
+        <!-- Bottom Left HUD -->
+        <div id="bottom-left-hud-wrapper">
+            <!-- Action Buttons -->
+            <div id="action-buttons-container">
+                <button id="create-city-button" class="action-button">
+                    <img src="/src/textures/Icon.png" alt="Create City" style="width: 32px; height: 32px;">
+                </button>
+                <button id="create-fields-button" class="action-button">
+                    <img src="/src/textures/Icon.png" alt="Create Fields" style="width: 32px; height: 32px;">
+                </button>
+            </div>
+
+            <!-- Context Menu -->
+            <div id="context-menu-container">
+                <!-- Content will be added here later -->
+            </div>
         </div>
 
         <!-- Minimap -->

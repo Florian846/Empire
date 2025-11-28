@@ -12,7 +12,8 @@ export async function startGame(gameSettings: GameSettings) {
 
   const gameGuiContainer = document.getElementById("game-gui-container");
   if (gameGuiContainer) {
-    gameGuiContainer.classList.remove("hidden");
+    gameGuiContainer.removeAttribute("hidden");
+    gameGuiContainer.style.display = "block";
   }
 
   // Get GUI elements
@@ -47,7 +48,12 @@ export async function startGame(gameSettings: GameSettings) {
 async function gameInit(gameSettings: GameSettings): Promise<Application> {
   console.log("Starting game...");
   const app = new Application();
-  await app.init({ resizeTo: window, antialias: true, powerPreference: 'high-performance' });
+  await app.init({
+    resizeTo: window,
+    antialias: true,
+    powerPreference: "high-performance",
+    backgroundColor: 0x000000,
+  });
 
   const pixiContainer = document.getElementById("pixi-container");
   if (!pixiContainer) {
