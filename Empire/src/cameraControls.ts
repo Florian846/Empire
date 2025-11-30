@@ -65,7 +65,6 @@ export class CameraControls {
     this.handleMouseWheelInput();
     this.handleEdgePanning();
     this.applyTransform();
-    console.log(this.cameraX, this.cameraY);
   }
 
   private handleMouseWheelInput() {

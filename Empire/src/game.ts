@@ -2,6 +2,7 @@ import { Application, Container } from "pixi.js";
 import { GameSettings } from "./types";
 import { initializeMap } from "./mapInitialization";
 import { CameraControls } from "./cameraControls";
+import { ChatSystem } from "./chat"; // Import the new ChatSystem
 
 let cameraControls: CameraControls;
 
@@ -11,7 +12,9 @@ export async function startGame(gameSettings: GameSettings) {
   app.ticker.add(() => gameLoop());
 
   showGameGui();
-  setupKeyboardControls();
+  const chatSystem = new ChatSystem(gameSettings); // Instantiate the new ChatSystem
+  chatSystem.pushMessage("Server", `${gameSettings.playerName} ist der Runde beigetreten`);
+  setupKeyboardControls(); // No longer needs gameSettings
 }
 
 function showGameGui() {
@@ -24,52 +27,16 @@ function showGameGui() {
 
 function setupKeyboardControls() {
   const scoreboardContainer = document.getElementById("scoreboard-container");
-  const chatController = createChatController();
 
   window.addEventListener("keydown", (event) => {
     if (isTabKey(event)) {
       handleScoreboardToggle(event, scoreboardContainer);
     }
-
-    if (isEnterKey(event)) {
-      handleChatInteraction(event, chatController);
-    }
   });
-}
-
-function createChatController() {
-  const chatContainer = document.getElementById("chat-container");
-  const chatInput = document.getElementById("chat-input") as HTMLInputElement;
-  let chatState: "closed" | "open" = "closed";
-
-  return {
-    isOpen: () => chatState === "open",
-    open: () => {
-      chatContainer?.classList.add("visible");
-      chatInput?.focus();
-      chatState = "open";
-    },
-    close: () => {
-      chatContainer?.classList.remove("visible");
-      chatInput?.blur();
-      chatState = "closed";
-    },
-    getMessage: () => chatInput?.value.trim() || "",
-    clearInput: () => {
-      if (chatInput) chatInput.value = "";
-    },
-    sendMessage: (message: string) => {
-      console.log("Message sent:", message);
-    },
-  };
 }
 
 function isTabKey(event: KeyboardEvent): boolean {
   return event.key === "Tab";
-}
-
-function isEnterKey(event: KeyboardEvent): boolean {
-  return event.key === "Enter";
 }
 
 function handleScoreboardToggle(
@@ -78,27 +45,6 @@ function handleScoreboardToggle(
 ) {
   event.preventDefault();
   scoreboardContainer?.classList.toggle("hidden");
-}
-
-function handleChatInteraction(
-  event: KeyboardEvent,
-  chatController: ReturnType<typeof createChatController>,
-) {
-  event.preventDefault();
-
-  if (!chatController.isOpen()) {
-    chatController.open();
-    return;
-  }
-
-  const message = chatController.getMessage();
-
-  if (message) {
-    chatController.sendMessage(message);
-    chatController.clearInput();
-  } else {
-    chatController.close();
-  }
 }
 
 async function gameInit(gameSettings: GameSettings): Promise<Application> {
