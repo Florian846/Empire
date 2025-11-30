@@ -1,0 +1,20 @@
+Höhe            Material 
+0-119: Nummer   120-127: Nummer
+120		8
+
+7 Bits = 1 Tile
+
+2 Bytes für x und y Koordinaten also von -128 bis 128
+
+1 Chunk = 256 Tiles
+256 Tiles * 7 Bits = 1792 Bits = 224 Bytes
+224 Bytes + 2 Bytes Kordinaten
+
+226 Bytes pro Chunk
+
+Bsp.:
+
+Größtmögliche Map
+
+256 Chunks * 256 Chunks = 65536
+65536 Chunks * 226 Bytes = 14.811.136 Bytes

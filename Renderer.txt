@@ -1,0 +1,13 @@
+Abfrage nach Änderung bestehender Chunks & Entities
+
+Anfrage nach neuen Chunks an den server oder wenn local an andere Klasse
+
+Klasse/server antwort Validierung und anschlieesendes zurücksender wenn gültig des Chunkes + im chunk sich befindener entities
+
+Position der Kamera des Spielers wird abgrufen
+
+Weche Chunks liegen in dem Bereich der kamera 
+Welche Tiles liles an rand chunks liegem im sichtbaren Bereich der der Camera
+alle sichbaren tiles auf dem canvas darstellen
+
+wie specihert man am besten daten wie zb eine weltmap in einem spiel wie zb minecraft habe ein2d game geplant und bin grade dabei den renderer zu schreiben möchte einzelne teile in chunks speichern  A

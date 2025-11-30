@@ -122,7 +122,7 @@ export class MapGenerator {
         } else if (height < TERRAIN.GRASS.threshold) {
           this.terrainGrid[y][x] = "GRASS";
         } else if (height < TERRAIN.MOUNTAIN_BASE.threshold) {
-          this.terrainGrid[y][x] = "GRASS"; 
+          this.terrainGrid[y][x] = "GRASS";
         } else if (height < TERRAIN.MOUNTAIN.threshold) {
           this.terrainGrid[y][x] = "MOUNTAIN";
         } else {
@@ -142,11 +142,12 @@ export class MapGenerator {
 
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
-        if (this.terrainGrid[y][x] === 'GRASS') {
+        if (this.terrainGrid[y][x] === "GRASS") {
           const forestValue =
             (noise2D(x * forestFreq, y * forestFreq) + 1) * 0.5;
 
-          if (forestValue > 0.45) { // Lowered to increase forest density
+          if (forestValue > 0.45) {
+            // Lowered to increase forest density
             this.terrainGrid[y][x] = "FOREST";
           }
         }
