@@ -363,8 +363,8 @@ html {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  width: 180px; /* Example size */
-  height: 180px; /* Example size */
+  width: 10vw; /* Example size */
+  height: 10vw; /* Example size */
   padding: 5px;
   pointer-events: auto;
   background-color: rgba(0, 0, 0, 0.7);
