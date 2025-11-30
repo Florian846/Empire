@@ -20,7 +20,9 @@ export function showMainMenu() {
       menuContainer.style.display = "none";
       matchSettingsContainer.style.display = "flex";
 
-      const playerNameInput = document.getElementById("player-name") as HTMLInputElement;
+      const playerNameInput = document.getElementById(
+        "player-name",
+      ) as HTMLInputElement;
       if (playerNameInput) {
         const randomNumber = Math.floor(1000 + Math.random() * 9000);
         playerNameInput.value = `User${randomNumber}`;
@@ -35,7 +37,9 @@ export function showMainMenu() {
       const botCount = (
         document.getElementById("bot-count") as HTMLSelectElement
       ).value;
-      const playerName = (document.getElementById("player-name") as HTMLInputElement).value;
+      const playerName = (
+        document.getElementById("player-name") as HTMLInputElement
+      ).value;
 
       matchSettingsContainer.style.display = "none";
       showLoadingScreen({ mapSize, botCount, playerName });

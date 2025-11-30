@@ -86,8 +86,10 @@ export class CameraControls {
       const mouseWorldY = (this.mousePosition.y - this.container.y) / oldScale;
 
       // The new container position is the mouse position minus the scaled world offset
-      const newContainerX = this.mousePosition.x - mouseWorldX * this.targetZoom;
-      const newContainerY = this.mousePosition.y - mouseWorldY * this.targetZoom;
+      const newContainerX =
+        this.mousePosition.x - mouseWorldX * this.targetZoom;
+      const newContainerY =
+        this.mousePosition.y - mouseWorldY * this.targetZoom;
 
       // Update cameraX and cameraY based on the new container position
       this.cameraX = newContainerX / this.targetZoom;

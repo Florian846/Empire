@@ -1,156 +1,187 @@
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/ico" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="src/style.css">
+    <link rel="stylesheet" href="src/style.css" />
     <title>Empire</title>
-</head>
+  </head>
 
-<body>
-<div id="app">
-    <div class="scrolling-background"></div>
-    <div id="menu-container">
+  <body>
+    <div id="app">
+      <div class="scrolling-background"></div>
+      <div id="menu-container">
         <div class="game-title">
-            <img src="/src/textures/titel.png" alt="Empire Game Logo">
+          <img src="/src/textures/titel.png" alt="Empire Game Logo" />
         </div>
 
         <div class="menu-buttons">
-            <button id="singleplayer-button" class="menu-button">Singleplayer</button>
-            <button id="multiplayer-button" class="menu-button disabled">Multiplayer</button>
-            <button id="tutorial-button" class="menu-button disabled">Tutorial</button>
-            <button id="settings-button" class="menu-button disabled">Einstellungen</button>
-            <button id="instructions-button" class="menu-button disabled">Anleitung</button>
+          <button id="singleplayer-button" class="menu-button">
+            Singleplayer
+          </button>
+          <button id="multiplayer-button" class="menu-button disabled">
+            Multiplayer
+          </button>
+          <button id="tutorial-button" class="menu-button disabled">
+            Tutorial
+          </button>
+          <button id="settings-button" class="menu-button disabled">
+            Einstellungen
+          </button>
+          <button id="instructions-button" class="menu-button disabled">
+            Anleitung
+          </button>
         </div>
 
-        <a href="https://discord.gg/g3Bh9w5qfu" target="_blank" class="discord-link">
-            <img src="/src/textures/discord-icon.png" alt="Join Discord">
-        </a>-
-    </div>
+        <a
+          href="https://discord.gg/g3Bh9w5qfu"
+          target="_blank"
+          class="discord-link"
+        >
+          <img src="/src/textures/discord-icon.png" alt="Join Discord" /> </a
+        >-
+      </div>
 
-    <div id="match-settings-container" style="display: none;">
+      <div id="match-settings-container" style="display: none">
         <div class="settings-panel">
-            <h2>Spiel Einstellungen</h2>
+          <h2>Spiel Einstellungen</h2>
 
-            <div class="setting-group">
-                <label for="player-name">Spielername</label>
-                <input type="text" id="player-name">
-            </div>
+          <div class="setting-group">
+            <label for="player-name">Spielername</label>
+            <input type="text" id="player-name" />
+          </div>
 
-            <div class="setting-group">
-                <label>Kartengröße</label>
-                <select id="map-size">
-                    <option value="small">Klein</option>
-                    <option value="medium" selected>Mittel</option>
-                    <option value="large">Groß</option>
-                </select>
-            </div>
+          <div class="setting-group">
+            <label>Kartengröße</label>
+            <select id="map-size">
+              <option value="small">Klein</option>
+              <option value="medium" selected>Mittel</option>
+              <option value="large">Groß</option>
+            </select>
+          </div>
 
-            <div class="setting-group">
-                <label>Anzahl der Bots</label>
-                <select id="bot-count">
-                    <option value="1">1 Bot</option>
-                    <option value="2">2 Bots</option>
-                    <option value="3">3 Bots</option>
-                    <option value="4">4 Bots</option>
-                </select>
-            </div>
+          <div class="setting-group">
+            <label>Anzahl der Bots</label>
+            <select id="bot-count">
+              <option value="1">1 Bot</option>
+              <option value="2">2 Bots</option>
+              <option value="3">3 Bots</option>
+              <option value="4">4 Bots</option>
+            </select>
+          </div>
 
+          <div class="setting-buttons">
             <div class="setting-buttons">
-                <div class="setting-buttons">
-                    <button id="load-game-button" class="menu-button full-width">Spiel laden</button>
-                    <div class="button-row">
-                        <button id="back-to-menu-button" class="menu-button">Zurück zum Menü</button>
-                        <button id="start-game-button" class="menu-button">Spiel starten</button>
-                    </div>
-                </div>
-
+              <button id="load-game-button" class="menu-button full-width">
+                Spiel laden
+              </button>
+              <div class="button-row">
+                <button id="back-to-menu-button" class="menu-button">
+                  Zurück zum Menü
+                </button>
+                <button id="start-game-button" class="menu-button">
+                  Spiel starten
+                </button>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-    <div id="pixi-container"></div>
+      </div>
+      <div id="pixi-container"></div>
 
-    <!-- Game GUI Container (initially hidden) -->
-    <div id="game-gui-container" hidden>
+      <!-- Game GUI Container (initially hidden) -->
+      <div id="game-gui-container" hidden>
         <!-- Resources -->
         <div id="resources-container">
-            <div class="resource-item">
-                <img src="/src/textures/Icon.png" alt="Population Icon">
-                <span id="population-value">0</span>
-            </div>
-            <div class="resource-item">
-                <img src="/src/textures/Icon.png" alt="Soldiers Icon">
-                <span id="soldiers-value">0</span>
-            </div>
-            <div class="resource-item">
-                <img src="/src/textures/Icon.png" alt="Land Controlled Icon">
-                <span id="land-value">0%</span>
-            </div>
-            <div class="resource-item">
-                <img src="/src/textures/Stone.png" alt="Metal Icon">
-                <span id="metal-value">0</span>
-            </div>
-            <div class="resource-item">
-                <img src="/src/textures/Tree1.png" alt="Wood Icon">
-                <span id="wood-value">0</span>
-            </div>
-            <div class="resource-item">
-                <img src="/src/textures/Icon.png" alt="Food Icon">
-                <span id="food-value">0</span>
-            </div>
+          <div class="resource-item">
+            <img src="/src/textures/Icon.png" alt="Population Icon" />
+            <span id="population-value">0</span>
+          </div>
+          <div class="resource-item">
+            <img src="/src/textures/Icon.png" alt="Soldiers Icon" />
+            <span id="soldiers-value">0</span>
+          </div>
+          <div class="resource-item">
+            <img src="/src/textures/Icon.png" alt="Land Controlled Icon" />
+            <span id="land-value">0%</span>
+          </div>
+          <div class="resource-item">
+            <img src="/src/textures/Stone.png" alt="Metal Icon" />
+            <span id="metal-value">0</span>
+          </div>
+          <div class="resource-item">
+            <img src="/src/textures/Tree1.png" alt="Wood Icon" />
+            <span id="wood-value">0</span>
+          </div>
+          <div class="resource-item">
+            <img src="/src/textures/Icon.png" alt="Food Icon" />
+            <span id="food-value">0</span>
+          </div>
         </div>
 
         <!-- Bottom Left HUD -->
         <div id="bottom-left-hud-wrapper">
-            <!-- Action Buttons -->
-            <div id="action-buttons-container">
-                <button id="create-city-button" class="action-button">
-                    <img src="/src/textures/Icon.png" alt="Create City" style="width: 32px; height: 32px;">
-                </button>
-                <button id="create-fields-button" class="action-button">
-                    <img src="/src/textures/Icon.png" alt="Create Fields" style="width: 32px; height: 32px;">
-                </button>
-            </div>
+          <!-- Action Buttons -->
+          <div id="action-buttons-container">
+            <button id="create-city-button" class="action-button">
+              <img
+                src="/src/textures/Icon.png"
+                alt="Create City"
+                style="width: 32px; height: 32px"
+              />
+            </button>
+            <button id="create-fields-button" class="action-button">
+              <img
+                src="/src/textures/Icon.png"
+                alt="Create Fields"
+                style="width: 32px; height: 32px"
+              />
+            </button>
+          </div>
 
-            <!-- Context Menu -->
-            <div id="context-menu-container">
-                <!-- Content will be added here later -->
-            </div>
+          <!-- Context Menu -->
+          <div id="context-menu-container">
+            <!-- Content will be added here later -->
+          </div>
         </div>
 
         <!-- Minimap -->
         <div id="minimap-container">
-            <h4>Minimap</h4>
-            <div id="minimap-canvas">
-                <!-- Minimap rendering will go here -->
-            </div>
+          <h4>Minimap</h4>
+          <div id="minimap-canvas">
+            <!-- Minimap rendering will go here -->
+          </div>
         </div>
 
         <!-- Chat -->
         <div id="chat-container" class="hidden">
-            <div id="chat-messages">
-                <!-- Chat messages will be added here by JS -->
-                <div class="chat-message"><span>Player1:</span> Hello!</div>
-                <div class="chat-message"><span>Bot1:</span> Greetings!</div>
-            </div>
-            <input type="text" id="chat-input" placeholder="Type your message...">
+          <div id="chat-messages">
+            <!-- Chat messages will be added here by JS -->
+            <div class="chat-message"><span>Player1:</span> Hello!</div>
+            <div class="chat-message"><span>Bot1:</span> Greetings!</div>
+          </div>
+          <input
+            type="text"
+            id="chat-input"
+            placeholder="Type your message..."
+          />
         </div>
 
         <!-- Scoreboard -->
         <div id="scoreboard-container" class="hidden">
-            <div class="scoreboard-header">
-                <h2>Scoreboard</h2>
-            </div>
-            <ul id="player-list">
-                <!-- Player entries will be added here by JS -->
-                <li>Spieler 1: 1000</li>
-                <li>Bot 1: 800</li>
-                <li>Bot 2: 750</li>
-            </ul>
+          <div class="scoreboard-header">
+            <h2>Scoreboard</h2>
+          </div>
+          <ul id="player-list">
+            <!-- Player entries will be added here by JS -->
+            <li>Spieler 1: 1000</li>
+            <li>Bot 1: 800</li>
+            <li>Bot 2: 750</li>
+          </ul>
         </div>
+      </div>
     </div>
-</div>
-<script type="module" src="/src/main.ts"></script>
-</body>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

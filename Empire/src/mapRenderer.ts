@@ -15,13 +15,14 @@ export async function renderMap(
       stone: await Assets.load<Texture>("src/textures/Stone.png"),
       tree1: await Assets.load<Texture>("src/textures/Tree1.png"),
       tree2: await Assets.load<Texture>("src/textures/Tree2.png"),
-        };
-    
-            for (const key in textures) {
-                textures[key as keyof typeof textures].baseTexture.scaleMode = SCALE_MODES.NEAREST;
-            }
-    
-        console.log("All textures loaded and configured successfully");
+    };
+
+    for (const key in textures) {
+      textures[key as keyof typeof textures].baseTexture.scaleMode =
+        SCALE_MODES.NEAREST;
+    }
+
+    console.log("All textures loaded and configured successfully");
 
     const TILE_SIZE = 16;
     const terrainGrid = mapGenerator.getTerrainGrid();

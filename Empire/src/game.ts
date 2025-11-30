@@ -69,7 +69,12 @@ async function gameInit(gameSettings: GameSettings): Promise<Application> {
   try {
     const map = await initializeMap(app, gameContainer, gameSettings);
     const TILE_SIZE = 16;
-    cameraControls = new CameraControls(app, gameContainer, map.width * TILE_SIZE, map.height * TILE_SIZE);
+    cameraControls = new CameraControls(
+      app,
+      gameContainer,
+      map.width * TILE_SIZE,
+      map.height * TILE_SIZE,
+    );
   } catch (error) {
     console.error("Error during map initialization:", error);
   }
