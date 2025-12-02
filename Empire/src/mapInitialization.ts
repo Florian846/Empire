@@ -13,7 +13,7 @@ export async function initializeMap(
   console.log("Initializing map...");
   const map = await generateMap(settings);
 
-  await renderMap(gameContainer, map);
+  await renderMap(app, gameContainer, map);
 
   console.log("Map initialized successfully.");
   return map;

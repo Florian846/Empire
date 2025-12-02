@@ -14,7 +14,10 @@ export async function startGame(gameSettings: GameSettings) {
 
   showGameGui();
   const chatSystem = new ChatSystem(gameSettings); // Instantiate the new ChatSystem
-  chatSystem.pushMessage("Server", `${gameSettings.playerName} ist der Runde beigetreten`);
+  chatSystem.pushMessage(
+    "Server",
+    `${gameSettings.playerName} ist der Runde beigetreten`,
+  );
   setupKeyboardControls(); // No longer needs gameSettings
 }
 

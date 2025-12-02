@@ -107,14 +107,17 @@ export class MinimapRenderer {
     for (let y = 0; y < this.mapGenerator.height; y++) {
       for (let x = 0; x < this.mapGenerator.width; x++) {
         const terrainType = terrainGrid[y][x];
-        const color = this.terrainColors[terrainType] || this.terrainColors.DEFAULT;
+        const color =
+          this.terrainColors[terrainType] || this.terrainColors.DEFAULT;
 
-        this.minimapGraphics.rect(
-          x * this.minimapTileSize,
-          y * this.minimapTileSize,
-          this.minimapTileSize,
-          this.minimapTileSize,
-        ).fill({ color: color });
+        this.minimapGraphics
+          .rect(
+            x * this.minimapTileSize,
+            y * this.minimapTileSize,
+            this.minimapTileSize,
+            this.minimapTileSize,
+          )
+          .fill({ color: color });
       }
     }
   }
@@ -122,7 +125,11 @@ export class MinimapRenderer {
   public updateCameraView() {
     this.cameraViewRect.clear();
 
-    const { x: cameraWorldX, y: cameraWorldY, zoom } = this.cameraControls.getCameraPosition();
+    const {
+      x: cameraWorldX,
+      y: cameraWorldY,
+      zoom,
+    } = this.cameraControls.getCameraPosition();
     const viewportWidth = this.mainApp.view.width; // Use mainApp's view
     const viewportHeight = this.mainApp.view.height; // Use mainApp's view
 

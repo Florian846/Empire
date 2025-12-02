@@ -63,10 +63,10 @@ export class ChatSystem {
   };
 
   public pushMessage(sender: string, message: string) {
-    const messageArea = document.getElementById('chat-messages');
+    const messageArea = document.getElementById("chat-messages");
     if (messageArea) {
-      const messageElement = document.createElement('div');
-      messageElement.classList.add('chat-message');
+      const messageElement = document.createElement("div");
+      messageElement.classList.add("chat-message");
       messageElement.innerHTML = `<span>${sender}:</span> ${message}`;
       messageArea.appendChild(messageElement);
       messageArea.scrollTop = messageArea.scrollHeight;
