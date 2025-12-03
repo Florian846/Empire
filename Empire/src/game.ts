@@ -4,6 +4,7 @@ import { initializeMap } from "./mapInitialization";
 import { CameraControls } from "./cameraControls";
 import { ChatSystem } from "./chat"; // Import the new ChatSystem
 import { MinimapRenderer } from "./minimapRenderer";
+import { MusicPlayer } from "./musicPlayer";
 
 let cameraControls: CameraControls;
 
@@ -19,6 +20,9 @@ export async function startGame(gameSettings: GameSettings) {
     `${gameSettings.playerName} ist der Runde beigetreten`,
   );
   setupKeyboardControls(); // No longer needs gameSettings
+  
+  const musicPlayer = new MusicPlayer();
+  musicPlayer.start();
 }
 
 function showGameGui() {
