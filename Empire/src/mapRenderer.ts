@@ -59,9 +59,17 @@ export async function renderMap(
                     }
                 }
 
-                const baseSprite = createBaseSprite(terrainType, heightMap[y][x], textures);
+                const [baseSprite, rotation] = createBaseSprite(terrainType, heightMap[y][x], textures);
                 if (baseSprite) {
                     baseSprite.position.set(x * TILE_SIZE, y * TILE_SIZE);
+
+                    if (rotation !== 0) {
+                        baseSprite.anchor.set(0.5);
+                        baseSprite.rotation = rotation;
+                        baseSprite.x += TILE_SIZE / 2;
+                        baseSprite.y += TILE_SIZE / 2;
+                    }
+                    
                     tempContainer.addChild(baseSprite);
                 }
 
