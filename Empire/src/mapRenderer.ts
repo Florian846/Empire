@@ -1,7 +1,7 @@
 import { Container, Application, RenderTexture, Sprite } from "pixi.js";
 import { MapGenerator } from "./mapGenerator";
 import { loadMapTextures } from "./mapTextureLoader";
-import { createSandGrassBlendMap, calculate8WayMask, createDirtStoneBlendMap } from "./blendMaskCalculator";
+import { createBlendMap, calculate8WayMask } from "./blendMaskCalculator";
 import { TILE_SIZE, createBaseSprite, createTreeSprite } from "./tileRenderer";
 
 export async function renderMap(
@@ -23,8 +23,8 @@ export async function renderMap(
 
         const tempContainer = new Container();
         const terrainGrid = mapGenerator.getTerrainGrid();
-        const sandGrassBlendMap = createSandGrassBlendMap();
-        const dirtStoneBlendMap = createDirtStoneBlendMap();
+        const sandGrassBlendMap = createBlendMap('SandGrass');
+        const dirtStoneBlendMap = createBlendMap('DirtStone');
 
         const getTerrainType = (x: number, y: number): string => {
             if (x < 0 || x >= mapGenerator.width || y < 0 || y >= mapGenerator.height)
