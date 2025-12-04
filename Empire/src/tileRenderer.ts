@@ -27,7 +27,7 @@ export function createBaseSprite(
             break;
         case "MOUNTAIN":
             sprite = new Sprite(textures.stone);
-            sprite.tint = 0xaaaaaa;
+            sprite.tint = 0xffffff;
             rotation = rotations[Math.floor(Math.random() * rotations.length)];
             break;
         case "SNOW":
