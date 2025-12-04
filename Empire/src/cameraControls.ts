@@ -137,12 +137,14 @@ export class CameraControls {
     }
   }
 
+  /*
   private updateCameraFromContainer() {
     this.cameraX =
       (this.container.x - window.innerWidth / 2) / this.container.scale.x;
     this.cameraY =
       (this.container.y - window.innerHeight / 2) / this.container.scale.y;
   }
+  */
 
   public setCameraPosition(x: number, y: number, zoom?: number) {
     this.cameraX = x;

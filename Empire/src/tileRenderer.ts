@@ -1,11 +1,10 @@
-import { Sprite, Texture } from "pixi.js";
+import { Sprite } from "pixi.js";
 import { MapTextures } from "./mapTextureLoader";
 
 export const TILE_SIZE = 16;
 
 export function createBaseSprite(
     terrainType: string,
-    height: number,
     textures: MapTextures,
 ): [Sprite | null, number] {
     let sprite: Sprite;

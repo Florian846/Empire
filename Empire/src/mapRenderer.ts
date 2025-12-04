@@ -1,7 +1,7 @@
 import { Container, Application, RenderTexture, Sprite } from "pixi.js";
 import { MapGenerator } from "./mapGenerator";
 import { loadMapTextures } from "./mapTextureLoader";
-import { createSandGrassBlendMap, calculate8WayMask } from "./blendMaskCalculator";
+import { createSandGrassBlendMap, calculate8WayMask, createDirtStoneBlendMap } from "./blendMaskCalculator";
 import { TILE_SIZE, createBaseSprite, createTreeSprite } from "./tileRenderer";
 
 export async function renderMap(
@@ -12,7 +12,7 @@ export async function renderMap(
     console.log("Optimized Rendering: Rendering map to a single texture...");
 
     try {
-        const { textures, dirtSandBlendTextures } = await loadMapTextures();
+        const { textures, dirtSandBlendTextures, dirtStoneBlendTextures } = await loadMapTextures();
         console.log("All textures loaded and configured successfully.");
 
         const renderTexture = RenderTexture.create({
@@ -23,8 +23,8 @@ export async function renderMap(
 
         const tempContainer = new Container();
         const terrainGrid = mapGenerator.getTerrainGrid();
-        const heightMap = mapGenerator.getHeightMap();
         const sandGrassBlendMap = createSandGrassBlendMap();
+        const dirtStoneBlendMap = createDirtStoneBlendMap();
 
         const getTerrainType = (x: number, y: number): string => {
             if (x < 0 || x >= mapGenerator.width || y < 0 || y >= mapGenerator.height)
@@ -33,6 +33,7 @@ export async function renderMap(
         };
 
         const isGrass = (type: string) => type === "GRASS" || type === "FOREST";
+        const isStone = (type: string) => type === "MOUNTAIN" || type === "SNOW";
 
         for (let y = 0; y < mapGenerator.height; y++) {
             for (let x = 0; x < mapGenerator.width; x++) {
@@ -59,7 +60,28 @@ export async function renderMap(
                     }
                 }
 
-                const [baseSprite, rotation] = createBaseSprite(terrainType, heightMap[y][x], textures);
+                if (terrainType === "GRASS" || terrainType === "FOREST") {
+                    const maskValue = calculate8WayMask({
+                        n: isStone(getTerrainType(x, y - 1)),
+                        ne: isStone(getTerrainType(x + 1, y - 1)),
+                        e: isStone(getTerrainType(x + 1, y)),
+                        se: isStone(getTerrainType(x + 1, y + 1)),
+                        s: isStone(getTerrainType(x, y + 1)),
+                        sw: isStone(getTerrainType(x - 1, y + 1)),
+                        w: isStone(getTerrainType(x - 1, y)),
+                        nw: isStone(getTerrainType(x - 1, y - 1)),
+                    });
+
+                    const tileIndex = dirtStoneBlendMap[maskValue];
+                    if (tileIndex !== -1 && tileIndex < dirtStoneBlendTextures.length) {
+                        const blendSprite = new Sprite(dirtStoneBlendTextures[tileIndex]);
+                        blendSprite.position.set(x * TILE_SIZE, y * TILE_SIZE);
+                        tempContainer.addChild(blendSprite);
+                        continue;
+                    }
+                }
+
+                const [baseSprite, rotation] = createBaseSprite(terrainType, textures);
                 if (baseSprite) {
                     baseSprite.position.set(x * TILE_SIZE, y * TILE_SIZE);
 

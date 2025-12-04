@@ -1,13 +1,13 @@
 import { Application, Container, Graphics, Rectangle } from "pixi.js";
-import { MapGenerator, TERRAIN } from "./mapGenerator";
+import { MapGenerator } from "./mapGenerator";
 import { CameraControls } from "./cameraControls";
 
 export class MinimapRenderer {
   private mapGenerator: MapGenerator;
   private cameraControls: CameraControls;
   public minimapContainer: Container;
-  private minimapGraphics: Graphics; // For drawing the map tiles
-  private cameraViewRect: Graphics; // For drawing the camera view
+  public minimapGraphics: Graphics; // For drawing the map tiles
+  public cameraViewRect: Graphics; // For drawing the camera view
   private readonly MINIMAP_SIZE: number = 200; // px
   private minimapTileSize: number = 1; // px per map cell
   private terrainColors: { [key: string]: number } = {};

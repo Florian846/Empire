@@ -12,6 +12,7 @@ export interface MapTextures {
 export interface LoadedAssets {
     textures: MapTextures;
     dirtSandBlendTextures: Texture[];
+    dirtStoneBlendTextures: Texture[];
 }
 
 let cachedAssets: LoadedAssets | null = null;
@@ -23,7 +24,7 @@ export async function loadMapTextures(
         return cachedAssets;
     }
 
-    const totalAssets = 26; // 6 base textures + 20 blend textures
+    const totalAssets = 46; // 6 base textures + 20 blend textures + 20 dirt stone blend textures
     let loadedCount = 0;
 
     const updateProgress = () => {
@@ -60,17 +61,43 @@ export async function loadMapTextures(
 
     const dirtSandBlendTextures: Texture[] = [];
     for (let i = 0; i < 20; i++) {
-        const texture = await Assets.load<Texture>(
-            `src/textures/blend/DirtSand/DirtSand${i}.png`,
-        );
-        dirtSandBlendTextures.push(texture);
+        const path = `src/textures/blend/DirtSand/DirtSand${i}.png`;
+        try {
+            const texture = await Assets.load<Texture>(path);
+            dirtSandBlendTextures.push(texture);
+        } catch (error) {
+            console.warn(`Could not load blend texture: ${path}. Using empty texture as placeholder.`, error);
+            dirtSandBlendTextures.push(Texture.EMPTY);
+        }
+        updateProgress();
+    }
+
+    const dirtStoneBlendTextures: Texture[] = [];
+    for (let i = 0; i < 20; i++) {
+        const path = `src/textures/blend/DirtStone/DirtStone${i}.png`;
+        try {
+            const texture = await Assets.load<Texture>(path);
+            dirtStoneBlendTextures.push(texture);
+        } catch (error) {
+            console.warn(`Could not load blend texture: ${path}. Using empty texture as placeholder.`, error);
+            dirtStoneBlendTextures.push(Texture.EMPTY);
+        }
         updateProgress();
     }
 
     Object.values(textures).forEach((t) => (t.source.scaleMode = "nearest"));
-    dirtSandBlendTextures.forEach((t) => (t.source.scaleMode = "nearest"));
+    dirtSandBlendTextures.forEach((t) => {
+        if (t && t.source) {
+            t.source.scaleMode = "nearest";
+        }
+    });
+    dirtStoneBlendTextures.forEach((t) => {
+        if (t && t.source) {
+            t.source.scaleMode = "nearest";
+        }
+    });
 
-    cachedAssets = { textures, dirtSandBlendTextures };
+    cachedAssets = { textures, dirtSandBlendTextures, dirtStoneBlendTextures };
     return cachedAssets;
 }
 
