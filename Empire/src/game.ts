@@ -130,13 +130,9 @@ async function initializeGameMap(
       map.height * TILE_SIZE,
     );
 
-    minimapRenderer = new MinimapRenderer(app, minimapApp, map, cameraControls); // Pass both apps
+    minimapRenderer = new MinimapRenderer(app, minimapApp, map, cameraControls, TILE_SIZE); // Pass both apps
     minimapRenderer.renderMapToMinimap();
     // minimapApp.stage is the minimapContainer, so we just add to it directly
-    minimapApp.stage.addChild(minimapRenderer.minimapGraphics); // Add map graphics to minimapApp's stage
-    minimapApp.stage.addChild(minimapRenderer.cameraViewRect); // Add camera view rect to minimapApp's stage
-    // Also add minimapBackground directly to minimapApp.stage if not part of minimapGraphics
-
     minimapApp.ticker.add(() => minimapRenderer.updateCameraView()); // Update minimap's camera view via its own ticker
   } catch (error) {
     console.error("Error during map initialization:", error);

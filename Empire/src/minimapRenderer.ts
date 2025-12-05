@@ -1,4 +1,10 @@
-import { Application, Container, Graphics, Rectangle } from "pixi.js";
+import {
+  Application,
+  Container,
+  FederatedPointerEvent,
+  Graphics,
+  Rectangle,
+} from "pixi.js";
 import { MapGenerator } from "./mapGenerator";
 import { CameraControls } from "./cameraControls";
 
@@ -12,16 +18,20 @@ export class MinimapRenderer {
   private minimapTileSize: number = 1; // px per map cell
   private terrainColors: { [key: string]: number } = {};
   private minimapApp: Application; // Declare minimapApp here
+  private readonly tileSize: number;
+  private isDragging: boolean = false;
 
   constructor(
     private mainApp: Application, // The main game PIXI Application
     minimapApp: Application, // The minimap's PIXI Application
     mapGenerator: MapGenerator,
     cameraControls: CameraControls,
+    tileSize: number,
   ) {
     this.minimapApp = minimapApp;
     this.mapGenerator = mapGenerator;
     this.cameraControls = cameraControls;
+    this.tileSize = tileSize;
 
     this.minimapContainer = minimapApp.stage; // Use the minimap's stage as its container
     // No explicit x, y positioning as it's controlled by the HTML canvas element
@@ -53,26 +63,50 @@ export class MinimapRenderer {
 
   private setupMinimapInteraction() {
     this.minimapContainer.on("pointerdown", (event) => {
-      const clickPosition = event.data.getLocalPosition(this.minimapApp.stage); // Use minimapApp.stage for local position
-
-      // Convert minimap coordinates to world coordinates
-      const targetWorldX = clickPosition.x / this.minimapTileSize;
-      const targetWorldY = clickPosition.y / this.minimapTileSize;
-
-      // Adjust for centering the camera view on the clicked point
-      const currentZoom = this.cameraControls.getCameraPosition().zoom;
-      const viewportWidthInWorld = this.mainApp.view.width / currentZoom; // Use mainApp's view
-      const viewportHeightInWorld = this.mainApp.view.height / currentZoom; // Use mainApp's view
-
-      const cameraTargetX = -(targetWorldX - viewportWidthInWorld / 2);
-      const cameraTargetY = -(targetWorldY - viewportHeightInWorld / 2);
-
-      this.cameraControls.setCameraPosition(
-        cameraTargetX,
-        cameraTargetY,
-        currentZoom,
-      );
+      this.isDragging = true;
+      this.moveCameraFromMinimapEvent(event);
     });
+
+    this.minimapContainer.on("pointerup", () => {
+      this.isDragging = false;
+    });
+
+    this.minimapContainer.on("pointerupoutside", () => {
+      // To handle when mouse is released outside
+      this.isDragging = false;
+    });
+
+    this.minimapContainer.on("pointermove", (event) => {
+      if (this.isDragging) {
+        this.moveCameraFromMinimapEvent(event);
+      }
+    });
+  }
+
+  private moveCameraFromMinimapEvent(event: FederatedPointerEvent) {
+    const clickPosition = event.data.getLocalPosition(this.minimapApp.stage); // Use minimapApp.stage for local position
+
+    // Convert minimap coordinates to tile coordinates
+    const targetTileX = clickPosition.x / this.minimapTileSize;
+    const targetTileY = clickPosition.y / this.minimapTileSize;
+
+    // Convert tile coordinates to world pixel coordinates
+    const targetWorldX = targetTileX * this.tileSize;
+    const targetWorldY = targetTileY * this.tileSize;
+
+    // Adjust for centering the camera view on the clicked point
+    const currentZoom = this.cameraControls.getCameraPosition().zoom;
+    const viewportWidthInWorld = this.mainApp.view.width / currentZoom; // Use mainApp's view
+    const viewportHeightInWorld = this.mainApp.view.height / currentZoom; // Use mainApp's view
+
+    const cameraTargetX = -(targetWorldX - viewportWidthInWorld / 2);
+    const cameraTargetY = -(targetWorldY - viewportHeightInWorld / 2);
+
+    this.cameraControls.setCameraPosition(
+      cameraTargetX,
+      cameraTargetY,
+      currentZoom,
+    );
   }
 
   private setupTerrainColors() {
