@@ -2,17 +2,15 @@ import { Application, Container } from "pixi.js";
 import { GameSettings } from "./types";
 import { initializeMap } from "./mapInitialization";
 import { CameraControls } from "./cameraControls";
-import { ChatSystem } from "./chat"; // Import the new ChatSystem
+import { ChatSystem } from "./chat";
 import { MinimapRenderer } from "./minimapRenderer";
 import { MusicPlayer } from "./musicPlayer";
-import { BloomFilter } from "@pixi/filter-bloom"; // Correct import
-import { CRTFilter } from "@pixi/filter-crt"; // Correct import
+import { CRTFilter } from "@pixi/filter-crt";
 
 let app: Application; // Make app globally accessible
 let gameContainer: Container; // Make gameContainer globally accessible
 let cameraControls: CameraControls;
 let musicPlayer: MusicPlayer;
-let bloomFilter: BloomFilter; // Declare globally
 let crtFilter: CRTFilter; // Declare globally
 
 export async function startGame(gameSettings: GameSettings) {
@@ -31,37 +29,27 @@ export async function startGame(gameSettings: GameSettings) {
   musicPlayer = new MusicPlayer();
   musicPlayer.start();
 
-  // Initialize filters with comprehensive options and stronger defaults for testing visibility
-  bloomFilter = new BloomFilter({
-    threshold: 0.2,
-    bloomTexture: 1,
-    blur: 5,
-    quality: 10,
-    brightness: 1.2,
-    padding: 10,
-  });
-  bloomFilter.enabled = false;
-  bloomFilter.strength = 5; // Increased default strength for testing
-  console.log('BloomFilter initialized:', bloomFilter);
-
   crtFilter = new CRTFilter({
     lineWidth: 2,
-    lineContrast: 0.9, // Increased for testing
-    vignetting: 0.5, // Increased for testing
+    lineContrast: 0.5,
+    vignetting: 0.5,
     vignettingAlpha: 0.8,
     vignettingBlur: 0.3,
     curvature: 1,
     verticalLine: false,
-    noise: 0.7, // Increased for testing
+    noise: 0.7,
     time: 0,
   });
-  crtFilter.enabled = false;
-  console.log('CRTFilter initialized:', crtFilter);
+  crtFilter.enabled = true;
+  console.log("CRTFilter initialized:", crtFilter);
 
   // Apply filters to the gameContainer
   // Filters will be managed by their 'enabled' property
-  gameContainer.filters = [bloomFilter, crtFilter];
-  console.log('Filters applied to gameContainer.filters. Length:', gameContainer.filters.length);
+  gameContainer.filters = [crtFilter];
+  console.log(
+    "Filters applied to gameContainer.filters. Length:",
+    gameContainer.filters.length,
+  );
 
   setupInGameMenu(app, gameContainer);
 }
@@ -99,21 +87,13 @@ function setupInGameMenu(app: Application, gameContainer: Container) {
   const crtFilterCheckbox = document.getElementById(
     "crt-filter",
   ) as HTMLInputElement;
-  const bloomFilterCheckbox = document.getElementById(
-    "bloom-filter",
-  ) as HTMLInputElement;
-  const bloomIntensitySlider = document.getElementById(
-    "bloom-intensity",
-  ) as HTMLInputElement;
 
   const saveSettings = () => {
     const settings = {
       masterVolume: masterVolumeSlider.value,
       musicVolume: musicVolumeSlider.value,
       effectsVolume: effectsVolumeSlider.value,
-      crtFilterEnabled: crtFilterCheckbox.checked, // Save state
-      bloomFilterEnabled: bloomFilterCheckbox.checked, // Save state
-      bloomIntensity: bloomIntensitySlider.value, // Save state
+      crtFilterEnabled: crtFilterCheckbox.checked,
     };
     localStorage.setItem("gameSettings", JSON.stringify(settings));
   };
@@ -126,13 +106,11 @@ function setupInGameMenu(app: Application, gameContainer: Container) {
   };
 
   const applyFilterSettings = () => {
-    if (bloomFilter && crtFilter && gameContainer) { // Ensure filters and gameContainer are initialized
+    if (crtFilter && gameContainer) {
+      // Ensure filters and gameContainer are initialized
       crtFilter.enabled = crtFilterCheckbox.checked;
-      bloomFilter.enabled = bloomFilterCheckbox.checked;
-      bloomFilter.strength = parseFloat(bloomIntensitySlider.value);
       // Apply filters to gameContainer
-      gameContainer.filters = [bloomFilter, crtFilter].filter(f => f.enabled); // Only apply enabled filters
-      console.log('applyFilterSettings: CRT enabled:', crtFilter.enabled, 'Bloom enabled:', bloomFilter.enabled, 'Bloom strength:', bloomFilter.strength);
+      gameContainer.filters = [crtFilter].filter((f) => f.enabled); // Only apply enabled filters
     }
   };
 
@@ -146,11 +124,9 @@ function setupInGameMenu(app: Application, gameContainer: Container) {
 
       // Load filter settings
       crtFilterCheckbox.checked =
-        settings.crtFilterEnabled !== undefined ? settings.crtFilterEnabled : false;
-      bloomFilterCheckbox.checked =
-        settings.bloomFilterEnabled !== undefined ? settings.bloomFilterEnabled : false;
-      bloomIntensitySlider.value =
-        settings.bloomIntensity !== undefined ? settings.bloomIntensity : "1";
+        settings.crtFilterEnabled !== undefined
+          ? settings.crtFilterEnabled
+          : false;
     }
     updateMusicVolume(); // Apply volume
     applyFilterSettings(); // Apply filters after loading
@@ -191,14 +167,6 @@ function setupInGameMenu(app: Application, gameContainer: Container) {
 
   // Add event listeners for filter controls
   crtFilterCheckbox?.addEventListener("change", () => {
-    applyFilterSettings();
-    saveSettings();
-  });
-  bloomFilterCheckbox?.addEventListener("change", () => {
-    applyFilterSettings();
-    saveSettings();
-  });
-  bloomIntensitySlider?.addEventListener("input", () => {
     applyFilterSettings();
     saveSettings();
   });
@@ -324,10 +292,6 @@ function gameLoop() {
 
   // Animate CRT scanlines if the filter is enabled
   if (crtFilter && crtFilter.enabled && app) {
-    crtFilter.time += app.ticker.deltaMS / 1000 * 0.2;
-    // Log once every second (approx 60 frames)
-    if (app.ticker.count % 60 === 0) {
-      console.log('CRTFilter time updated:', crtFilter.time);
-    }
+    crtFilter.time += app.ticker.deltaMS / 1000;
   }
 }
