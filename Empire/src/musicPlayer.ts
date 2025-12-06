@@ -12,6 +12,15 @@ const MUSIC_FILES = [
 export class MusicPlayer {
     private lastTwoSongs: string[] = [];
     private currentSong: HTMLAudioElement | null = null;
+    private volume: number = 1;
+
+    public setVolume(volume: number) {
+        this.volume = volume;
+        if (this.currentSong) {
+            this.currentSong.volume = this.volume;
+        }
+    }
+
     private onSongEnd: () => void;
     private onSongError: () => void;
 
@@ -38,6 +47,7 @@ export class MusicPlayer {
         }
 
         this.currentSong = new Audio(nextSongPath);
+        this.currentSong.volume = this.volume;
 
         this.currentSong.addEventListener("ended", this.onSongEnd);
         this.currentSong.addEventListener("error", this.onSongError);

@@ -5,6 +5,7 @@ export function createBlendMap(type: 'SandGrass' | 'DirtStone'): BlendMap {
 
     map[255] = 0;
     map[223] = 0;
+    map[247] = 0;
     map[85] = 1;
     map[64] = 2;
     map[96] = 2;

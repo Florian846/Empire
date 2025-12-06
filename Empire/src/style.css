@@ -450,3 +450,133 @@ html {
   font-size: 0.9em;
   box-sizing: border-box;
 }
+
+/* In-game Settings Button */
+#ingame-settings-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: 2px solid #911b07;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+  transition: all 0.3s ease;
+  z-index: 30; /* Above other GUI elements */
+}
+
+#ingame-settings-button:hover {
+  background-color: #d22600;
+  transform: scale(1.1);
+}
+
+/* In-game Menu Container */
+#ingame-menu-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+#ingame-menu-container.visible {
+  display: flex;
+}
+
+#ingame-menu-container .settings-panel {
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: -5px;
+  right: 5px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.close-button:hover {
+  transform: scale(1.2);
+  color: #d22600;
+}
+
+/* Paused game background effect */
+#pixi-container.paused {
+  filter: grayscale(1) brightness(0.5);
+}
+
+/* Make sliders match the theme */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  background: #333;
+  border: 1px solid #911b07;
+  border-radius: 5px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #d22600;
+  border: 2px solid #911b07;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #d22600;
+  border: 2px solid #911b07;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Custom Checkbox and Divider */
+.setting-group-divider {
+  height: 2px;
+  background-color: #911b07;
+  margin: 30px 0;
+  border-radius: 1px;
+}
+
+/* Basic styling for checkbox to align with labels, no custom switch for now */
+.setting-group input[type="checkbox"] {
+  width: auto; /* Override 100% width for checkboxes */
+  margin-left: auto; /* Push checkbox to the right */
+  padding: 0;
+  height: auto;
+  border: none;
+}
+
+/* Align label and checkbox on the same line for these specific setting groups */
+.setting-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.setting-group label {
+  margin-bottom: 0; /* Remove bottom margin for labels in flex containers */
+}
