@@ -5,13 +5,12 @@ import { CameraControls } from "./cameraControls";
 import { ChatSystem } from "./chat";
 import { MinimapRenderer } from "./minimapRenderer";
 import { MusicPlayer } from "./musicPlayer";
-import { CRTFilter } from "@pixi/filter-crt";
+import { CRTFilterWebGL } from './CRTFilterWebGL.js';
 
 let app: Application; // Make app globally accessible
 let gameContainer: Container; // Make gameContainer globally accessible
 let cameraControls: CameraControls;
 let musicPlayer: MusicPlayer;
-let crtFilter: CRTFilter; // Declare globally
 
 export async function startGame(gameSettings: GameSettings) {
   app = await gameInit(gameSettings); // Assign to global app
@@ -28,30 +27,11 @@ export async function startGame(gameSettings: GameSettings) {
 
   musicPlayer = new MusicPlayer();
   musicPlayer.start();
-
-  crtFilter = new CRTFilter({
-    lineWidth: 2,
-    lineContrast: 0.5,
-    vignetting: 0.5,
-    vignettingAlpha: 0.8,
-    vignettingBlur: 0.3,
-    curvature: 1,
-    verticalLine: false,
-    noise: 0.7,
-    time: 0,
-  });
-  crtFilter.enabled = true;
-  console.log("CRTFilter initialized:", crtFilter);
-
-  // Apply filters to the gameContainer
-  // Filters will be managed by their 'enabled' property
-  gameContainer.filters = [crtFilter];
   console.log(
     "Filters applied to gameContainer.filters. Length:",
-    gameContainer.filters.length,
   );
 
-  setupInGameMenu(app, gameContainer);
+  setupInGameMenu(app);
 }
 
 function showGameGui() {
@@ -62,7 +42,7 @@ function showGameGui() {
   }
 }
 
-function setupInGameMenu(app: Application, gameContainer: Container) {
+function setupInGameMenu(app: Application) {
   const ingameSettingsButton = document.getElementById(
     "ingame-settings-button",
   );
@@ -105,15 +85,6 @@ function setupInGameMenu(app: Application, gameContainer: Container) {
     musicPlayer.setVolume(masterVolume * musicVolume);
   };
 
-  const applyFilterSettings = () => {
-    if (crtFilter && gameContainer) {
-      // Ensure filters and gameContainer are initialized
-      crtFilter.enabled = crtFilterCheckbox.checked;
-      // Apply filters to gameContainer
-      gameContainer.filters = [crtFilter].filter((f) => f.enabled); // Only apply enabled filters
-    }
-  };
-
   const loadSettings = () => {
     const savedSettings = localStorage.getItem("gameSettings");
     if (savedSettings) {
@@ -129,7 +100,6 @@ function setupInGameMenu(app: Application, gameContainer: Container) {
           : false;
     }
     updateMusicVolume(); // Apply volume
-    applyFilterSettings(); // Apply filters after loading
   };
 
   const openMenu = () => {
@@ -167,7 +137,6 @@ function setupInGameMenu(app: Application, gameContainer: Container) {
 
   // Add event listeners for filter controls
   crtFilterCheckbox?.addEventListener("change", () => {
-    applyFilterSettings();
     saveSettings();
   });
 
@@ -288,10 +257,4 @@ async function initializeGameMap(
 
 function gameLoop() {
   cameraControls.update();
-  // minimapRenderer.updateCameraView(); // This is now handled by minimapApp's ticker
-
-  // Animate CRT scanlines if the filter is enabled
-  if (crtFilter && crtFilter.enabled && app) {
-    crtFilter.time += app.ticker.deltaMS / 1000;
-  }
 }
