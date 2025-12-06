@@ -1,0 +1,48 @@
+This file explains the logic for the autotile texture blending.
+
+The system works by checking the 8 neighbors of a given tile to decide which blend mask to apply. It uses a priority system to determine which texture "wins" and gets blended on top.
+
+**Texture Priority:**
+Stone > Grass > Sand > Water > Dirt
+
+A higher priority texture will always be blended *on top* of a lower priority texture.
+
+**Neighbor Bitmask:**
+We check the 8 neighbors of a tile. If a neighbor has a *higher* priority, it contributes to a bitmask value. The bits are assigned as follows:
+
+- North (N):      1  (2^0)
+- North-East (NE):  2  (2^1)
+- East (E):       4  (2^2)
+- South-East (SE):  8  (2^3)
+- South (S):      16 (2^4)
+- South-West (SW):  32 (2^5)
+- West (W):       64 (2^6)
+- North-West (NW):  128 (2^7)
+
+The sum of these values gives a number between 0 and 255. This number uniquely identifies the configuration of higher-priority neighbors.
+
+**Mask Tileset (`autotile-masks.svg`):**
+The generated `autotile-masks.svg` file contains a set of base shapes for blending. We don't need 256 different shapes; we can reuse a small set by rotating them. The tiles in the sheet are:
+
+- **Tile 0:** Full solid fill (used for complex cases where a full tile is drawn).
+- **Tile 1:** Edge/Side (for one adjacent neighbor).
+- **Tile 2:** Corner (for two adjacent neighbors, creating an outer corner).
+- **Tile 3:** Inner Corner (a concave corner shape, used to smooth out inward-facing corners).
+- **Tile 4:** Diagonal Corner (a small corner for a single diagonal neighbor).
+
+**Mapping Logic (Simplified):**
+The code will contain a mapping that links each of the 256 possible bitmask values to a specific tile index from the spritesheet and a rotation value (0, 90, 180, or 270 degrees).
+
+**Example:**
+- If only the North tile has a higher priority, the mask is `1`.
+  - The logic will map this to: `Tile 1` (Edge), Rotation `180` degrees.
+- If only the West tile has a higher priority, the mask is `64`.
+  - The logic will map this to: `Tile 1` (Edge), Rotation `90` degrees.
+- If North and West tiles have higher priority, the mask is `1 + 64 = 65`.
+  - The logic will map this to: `Tile 2` (Corner), Rotation `90` degrees.
+- If North, West, and North-West tiles have higher priority, this creates a smooth, filled corner.
+  - The logic will map mask `1 + 64 + 128 = 193` to: `Tile 0` (Full solid fill).
+- If a tile is surrounded by higher priority tiles *except* for the North-West corner, this creates an inner corner.
+  - The logic will map this case to: `Tile 3` (Inner Corner), Rotation `270` degrees.
+
+This system allows for a flexible and efficient way to create smooth transitions between all different terrain types. The full mapping from all 256 values to a tile and rotation will be implemented directly in the `mapRenderer.ts` script.

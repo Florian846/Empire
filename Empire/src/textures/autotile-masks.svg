@@ -1,0 +1,42 @@
+<svg width="80" height="16" xmlns="http://www.w3.org/2000/svg">
+    <!-- 
+    This SVG contains 5 tile masks for texture blending, each 16x16.
+    It has been updated to use a solid black background.
+    - WHITE areas will show the neighboring (higher-priority) texture.
+    - BLACK areas will show the base (lower-priority) texture.
+    -->
+    <defs>
+        <style>
+            .shape { fill: #FFFFFF; }
+        </style>
+    </defs>
+
+    <!-- Black background for the entire sprite sheet -->
+    <rect x="0" y="0" width="80" height="16" fill="#000000" />
+
+    <!-- Tile 0: Full Block (White rectangle on black bg) -->
+    <rect x="0" y="0" width="16" height="16" class="shape" />
+
+    <!-- Tile 1: Edge (South) -->
+    <g transform="translate(16, 0)">
+        <path d="M0,8 A8,8 0 0,0 8,16 A8,8 0 0,0 16,8 V0 H0 Z" class="shape" />
+    </g>
+
+    <!-- Tile 2: Corner (South-West) -->
+    <g transform="translate(32, 0)">
+        <path d="M8,0 A8,8 0 0,1 0,8 V16 H16 V8 A8,8 0 0,1 8,0 Z" class="shape" />
+    </g>
+
+    <!-- Tile 3: Inner Corner (pointing South-West) -->
+    <g transform="translate(48, 0)">
+        <path d="M0,8 A8,8 0 0,0 8,0 H0 Z M8,16 A8,8 0 0,0 0,8 V16 Z" class="shape" />
+        <rect x="0" y="0" width="8" height="8" class="shape" />
+        <rect x="8" y="8" width="8" height="8" class="shape" />
+    </g>
+
+    <!-- Tile 4: Diagonal Corner (South-West) -->
+    <g transform="translate(64, 0)">
+        <path d="M8,16 A16,16 0 0,1 0,0 H16 V16 Z" class="shape" />
+    </g>
+
+</svg>
